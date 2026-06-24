@@ -14,14 +14,16 @@ export component MainWindow inherits Window {
     // Evento disparado pelo botao; o Rust decide o que fazer (ver on_rodar).
     callback rodar();
 
+    // VerticalBox empilha os filhos de cima para baixo, na ordem do codigo.
+    // Para mover o botao para baixo, basta declara-lo DEPOIS do TextEdit.
     VerticalBox {
-        Button {
-            text: "Calcular arestas de K6";
-            clicked => { root.rodar(); }
-        }
         TextEdit {
             read-only: true;
             text: root.console-text;
+        }
+        Button {
+            text: "Comecar calculo";
+            clicked => { root.rodar(); }
         }
     }
 }
