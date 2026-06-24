@@ -1,0 +1,27 @@
+// Camada de apresentacao (markup, separado do Rust).
+// O build.rs compila este arquivo; o Rust o consome via slint::include_modules!().
+
+import { TextEdit, Button, VerticalBox } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    title: "Ramsey-Putnam";
+    preferred-width: 800px;
+    preferred-height: 600px;
+
+    // Texto preenchido pelo Rust; e o "stdout" da nossa janela.
+    in property <string> console-text;
+
+    // Evento disparado pelo botao; o Rust decide o que fazer (ver on_rodar).
+    callback rodar();
+
+    VerticalBox {
+        Button {
+            text: "Calcular arestas de K6";
+            clicked => { root.rodar(); }
+        }
+        TextEdit {
+            read-only: true;
+            text: root.console-text;
+        }
+    }
+}
