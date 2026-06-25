@@ -1,7 +1,7 @@
 // Camada de apresentacao (markup, separado do Rust).
 // O build.rs compila este arquivo; o Rust o consome via slint::include_modules!().
 
-import { TextEdit, Button, VerticalBox } from "std-widgets.slint";
+import { TextEdit, Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
@@ -15,15 +15,20 @@ export component MainWindow inherits Window {
     callback rodar();
 
     // VerticalBox empilha os filhos de cima para baixo, na ordem do codigo.
-    // Para mover o botao para baixo, basta declara-lo DEPOIS do TextEdit.
     VerticalBox {
         TextEdit {
             read-only: true;
             text: root.console-text;
         }
-        Button {
-            text: "Comecar calculo";
-            clicked => { root.rodar(); }
+        // Por padrao um filho do VerticalBox estica na largura. Para deixar o
+        // botao estreito, nos o colocamos num HorizontalBox com alignment:center,
+        // que o mantem no tamanho natural do texto, centralizado.
+        HorizontalBox {
+            alignment: center;
+            Button {
+                text: "Comecar calculo";
+                clicked => { root.rodar(); }
+            }
         }
     }
 }
