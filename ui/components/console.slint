@@ -1,0 +1,32 @@
+// Nosso console: fundo + texto monospace, com cores 100% vindas do Tema.
+// E um componente reutilizavel: recebe o texto via propriedade `texto`.
+import { Tema } from "../theme.slint";
+
+export component Console inherits Rectangle {
+    in property <string> texto;
+
+    background: Tema.console-bg;
+    border-width: 1px;
+    border-color: Tema.border;
+    border-radius: 6px;
+    clip: true;
+
+    flick := Flickable {
+        x: 14px;
+        y: 14px;
+        width: parent.width - 28px;
+        height: parent.height - 28px;
+        viewport-width: self.width;
+        viewport-height: txt.preferred-height;
+
+        txt := Text {
+            width: flick.width;
+            text: root.texto;
+            color: Tema.console-text;
+            font-family: "DejaVu Sans Mono";
+            font-size: 14px;
+            wrap: word-wrap;
+            horizontal-alignment: left;
+        }
+    }
+}

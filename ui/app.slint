@@ -1,94 +1,49 @@
-// Camada de apresentacao (markup, separado do Rust).
-// O build.rs compila este arquivo; o Rust o consome via slint::include_modules!().
-
+// PAINEL: importa os pedacos e os compoe. Le-se daqui o esqueleto do app.
+// O codigo pesado mora em theme.slint e components/.
 import { Button, VerticalBox, HorizontalBox, ComboBox, Palette } from "std-widgets.slint";
+import { Tema } from "theme.slint";
+import { Console } from "components/console.slint";
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
     icon: @image-url("assets/Penrose-dreieck.svg.png");
     preferred-width: 800px;
     preferred-height: 600px;
+    background: Tema.win-bg;
 
-    // Texto preenchido pelo Rust; e o "stdout" da nossa janela.
+    // Texto do console, preenchido pelo Rust.
     in property <string> console-text;
-
-    // Evento disparado pelo botao; o Rust decide o que fazer (ver on_rodar).
+    // Disparado pelo botao.
     callback rodar();
 
-    // Estado do tema (indice). 0 Claro, 1 Escuro, 2 Sepia, 3 Terminal.
-    property <int> tema: 3;
-
-    // Cores do NOSSO console, derivadas do tema. Tudo sob nosso controle.
-    // Cada uma e uma cadeia de ternarios (? :): "se tema==0 ... senao ...".
-    property <brush> cor-fundo:
-        tema == 0 ? #fdfdfd :
-        tema == 1 ? #1e1e1e :
-        tema == 2 ? #f4ecd8 :
-                    #0a0f0a;
-    property <color> cor-tinta:
-        tema == 0 ? #1a1a1a :
-        tema == 1 ? #e6e6e6 :
-        tema == 2 ? #5b4636 :
-                    #39ff14;
-
-    // Mantem os widgets prontos (ComboBox/Button) coerentes com o tema:
-    // temas escuros (Escuro=1, Terminal=3) usam o esquema dark.
+    // Espelha a base do tema para alinhar os widgets prontos ao claro/escuro.
+    // (changed roda quando 'escuro' muda; mirror local de Tema.escuro.)
+    property <bool> escuro: Tema.escuro;
     init => {
-        Palette.color-scheme = (root.tema == 1 || root.tema == 3) ? ColorScheme.dark : ColorScheme.light;
+        Palette.color-scheme = self.escuro ? ColorScheme.dark : ColorScheme.light;
     }
-    changed tema => {
-        Palette.color-scheme = (self.tema == 1 || self.tema == 3) ? ColorScheme.dark : ColorScheme.light;
+    changed escuro => {
+        Palette.color-scheme = self.escuro ? ColorScheme.dark : ColorScheme.light;
     }
 
     VerticalBox {
-        // Barra superior: rotulo + seletor de tema, alinhados a direita.
         HorizontalBox {
             alignment: end;
             Text {
                 text: "Tema:";
+                color: Tema.muted;
                 vertical-alignment: center;
             }
             ComboBox {
-                model: ["Claro", "Escuro", "Sepia", "Terminal"];
-                current-index: 3;
-                selected => {
-                    root.tema = self.current-index;
-                }
+                model: Tema.nomes;
+                current-index <=> Tema.id;
             }
         }
 
-        // NOSSO console: Rectangle (fundo) + Flickable (rolagem) + Text (monospace).
-        // Como sao primitivos, controlamos cada cor -> quantos temas quisermos.
-        Rectangle {
-            background: root.cor-fundo;
-            border-width: 1px;
-            border-color: #80808080;
-            border-radius: 6px;
-            clip: true;
-
-            // Flickable rola seu "viewport". A altura do viewport e a altura
-            // total do texto; quando passa da area visivel, da pra rolar.
-            flick := Flickable {
-                x: 14px;
-                y: 14px;
-                width: parent.width - 28px;
-                height: parent.height - 28px;
-                viewport-width: self.width;          // sem rolagem horizontal
-                viewport-height: txt.preferred-height; // altura real do texto
-
-                txt := Text {
-                    width: flick.width;               // quebra na largura visivel
-                    text: root.console-text;
-                    color: root.cor-tinta;
-                    font-family: "DejaVu Sans Mono";
-                    font-size: 14px;
-                    wrap: word-wrap;
-                    horizontal-alignment: left;
-                }
-            }
+        Console {
+            texto: root.console-text;
         }
 
-        // Botao principal, estreito e centralizado.
         HorizontalBox {
             alignment: center;
             Button {

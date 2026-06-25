@@ -1,0 +1,48 @@
+// Sistema de temas (global = singleton acessivel por qualquer componente).
+//
+// Ideia: cada tema HERDA de uma BASE (clara ou escura) e so sobrescreve as
+// cores marcantes (accent, console, arestas). Os neutros (fundos, bordas,
+// texto) vem da base. Assim nao repetimos ~25 cores por tema.
+//
+// id: 0 Terminal · 1 Âmbar (CRT) · 2 Nord · 3 Claro
+export global Tema {
+    in-out property <int> id: 0;
+
+    // Apenas "Claro" usa base clara; os demais usam base escura.
+    out property <bool> escuro: id != 3;
+
+    // ---- Neutros: vem da BASE (claro/escuro) ----
+    out property <color> win-bg:       escuro ? #0a0d0b : #ffffff;
+    out property <color> panel-bg:     escuro ? #0b0f0d : #fbfbfb;
+    out property <color> titlebar:     escuro ? #141a16 : #ededed;
+    out property <color> topbar:       escuro ? #0d120f : #fafafa;
+    out property <color> border:       escuro ? #1d251f : #dcdcdc;
+    out property <color> input-bg:     escuro ? #0e1411 : #ffffff;
+    out property <color> input-border: escuro ? #26322a : #c8c8c8;
+    out property <color> text:         escuro ? #a6e6b0 : #2a2f37;
+    out property <color> muted:        escuro ? #5f7a66 : #9a9a9a;
+    out property <color> label:        escuro ? #5a7563 : #9097a0;
+    out property <color> section:      escuro ? #69db7c : #6a7280;
+    out property <color> title-text:   escuro ? #8aa992 : #555555;
+
+    // ---- Marcantes: sobrescritas por TEMA (id) ----
+    out property <color> accent:
+        id == 0 ? #2ea043 : id == 1 ? #ffb000 : id == 2 ? #88c0d0 : #2ea043;
+    out property <color> console-bg:
+        id == 0 ? #070908 : id == 1 ? #0a0703 : id == 2 ? #272c36 : #f6f8f6;
+    out property <color> console-text:
+        id == 0 ? #6fdd83 : id == 1 ? #ffb000 : id == 2 ? #a3be8c : #1f6f3a;
+    out property <color> console-dim:
+        id == 0 ? #3c5e45 : id == 1 ? #6b531d : id == 2 ? #5e6878 : #9bb0a0;
+    out property <color> edge-a:
+        id == 0 ? #e5534b : id == 1 ? #ffb000 : id == 2 ? #bf616a : #d2493f;
+    out property <color> edge-b:
+        id == 0 ? #56a0d6 : id == 1 ? #e0561a : id == 2 ? #81a1c1 : #2f6fb0;
+    out property <color> btn-bg:
+        id == 0 ? #238636 : id == 1 ? #a9710a : id == 2 ? #5e81ac : #2f3540;
+    out property <color> btn-text:
+        id == 0 ? #eafff0 : id == 1 ? #fff1cf : id == 2 ? #eceff4 : #ffffff;
+
+    // Nomes para o seletor de tema.
+    out property <[string]> nomes: ["Terminal", "Âmbar (CRT)", "Nord", "Claro"];
+}
