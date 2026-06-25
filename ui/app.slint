@@ -1,12 +1,17 @@
 // Camada de apresentacao (markup, separado do Rust).
 // O build.rs compila este arquivo; o Rust o consome via slint::include_modules!().
 
-import { TextEdit, Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
+import { TextEdit, Button, VerticalBox, HorizontalBox, Palette } from "std-widgets.slint";
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
     preferred-width: 800px;
     preferred-height: 600px;
+
+    // Comeca no tema claro para o rotulo do botao ficar coerente.
+    init => {
+        Palette.color-scheme = ColorScheme.light;
+    }
 
     // Texto preenchido pelo Rust; e o "stdout" da nossa janela.
     in property <string> console-text;
@@ -14,15 +19,27 @@ export component MainWindow inherits Window {
     // Evento disparado pelo botao; o Rust decide o que fazer (ver on_rodar).
     callback rodar();
 
-    // VerticalBox empilha os filhos de cima para baixo, na ordem do codigo.
     VerticalBox {
+        // Barra superior: botao de tema, alinhado a direita.
+        // A logica vive toda aqui no Slint: ler e reescrever Palette.color-scheme.
+        HorizontalBox {
+            alignment: end;
+            Button {
+                text: Palette.color-scheme == ColorScheme.dark ? "Tema claro" : "Tema escuro";
+                clicked => {
+                    Palette.color-scheme = Palette.color-scheme == ColorScheme.dark
+                        ? ColorScheme.light
+                        : ColorScheme.dark;
+                }
+            }
+        }
+
         TextEdit {
             read-only: true;
             text: root.console-text;
         }
-        // Por padrao um filho do VerticalBox estica na largura. Para deixar o
-        // botao estreito, nos o colocamos num HorizontalBox com alignment:center,
-        // que o mantem no tamanho natural do texto, centralizado.
+
+        // Botao principal, estreito e centralizado.
         HorizontalBox {
             alignment: center;
             Button {
