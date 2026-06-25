@@ -24,6 +24,11 @@ versão do `slint`**, conferir/ajustar o bloco de registro da fonte em
 `src/app.rs` (e o nome da feature em `Cargo.toml`, que pode virar
 `unstable-fontique-0XX`).
 
+**Pegadinha de ordem:** `slint::fontique_010::shared_collection()` **entra em
+pânico** (`slint platform not initialized`) se chamado antes de a plataforma
+existir. Por isso o registro da fonte vem **depois** de `MainWindow::new()`
+(que inicializa o backend) e **antes** de `ui.run()`.
+
 **Licença da fonte:** DejaVu Sans Mono está sob a licença Bitstream Vera
 (permissiva, permite redistribuição). Texto em
 `ui/assets/fonts/DejaVuSansMono-LICENSE.txt`.

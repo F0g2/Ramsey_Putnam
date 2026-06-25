@@ -24,8 +24,13 @@ impl Default for Parametros {
 // Tudo que acontece ANTES de apertar o botao: cria a janela, prepara o estado
 // (no futuro, pedir parametros aqui) e liga o botao a calcular().
 pub fn run() -> Result<(), slint::PlatformError> {
+    // Cria a janela PRIMEIRO: e isso que inicializa o backend/plataforma do
+    // Slint. O registro de fonte via fontique (abaixo) exige a plataforma ja
+    // inicializada -- fazer antes daqui causa panic "platform not initialized".
+    let ui = MainWindow::new()?;
+
     // Fonte monospace embutida no binario (DejaVu Sans Mono, licenca Bitstream
-    // Vera). Registrada ANTES de criar a UI, para ja estar disponivel ao render.
+    // Vera). Vem depois de criar a janela e antes do run() (antes de renderizar).
     // Em Slint 1.17 isso passa pelo modulo fontique (feature instavel).
     {
         use std::sync::Arc;
@@ -35,7 +40,6 @@ pub fn run() -> Result<(), slint::PlatformError> {
         colecao.register_fonts(blob, None);
     }
 
-    let ui = MainWindow::new()?;
 
     ui.set_console_text(
         "Ramsey-Putnam — console grafico\n\
