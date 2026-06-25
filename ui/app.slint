@@ -1,17 +1,13 @@
 // Camada de apresentacao (markup, separado do Rust).
 // O build.rs compila este arquivo; o Rust o consome via slint::include_modules!().
 
-import { TextEdit, Button, VerticalBox, HorizontalBox, Palette } from "std-widgets.slint";
+import { Button, VerticalBox, HorizontalBox, ComboBox, Palette } from "std-widgets.slint";
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
+    icon: @image-url("assets/icone.svg");
     preferred-width: 800px;
     preferred-height: 600px;
-
-    // Comeca no tema claro para o rotulo do botao ficar coerente.
-    init => {
-        Palette.color-scheme = ColorScheme.light;
-    }
 
     // Texto preenchido pelo Rust; e o "stdout" da nossa janela.
     in property <string> console-text;
@@ -19,24 +15,69 @@ export component MainWindow inherits Window {
     // Evento disparado pelo botao; o Rust decide o que fazer (ver on_rodar).
     callback rodar();
 
+    // Estado do tema (indice). 0 Claro, 1 Escuro, 2 Sepia, 3 Terminal.
+    property <int> tema: 3;
+
+    // Cores do NOSSO console, derivadas do tema. Tudo sob nosso controle.
+    // Cada uma e uma cadeia de ternarios (? :): "se tema==0 ... senao ...".
+    property <brush> cor-fundo:
+        tema == 0 ? #fdfdfd :
+        tema == 1 ? #1e1e1e :
+        tema == 2 ? #f4ecd8 :
+                    #0a0f0a;
+    property <color> cor-tinta:
+        tema == 0 ? #1a1a1a :
+        tema == 1 ? #e6e6e6 :
+        tema == 2 ? #5b4636 :
+                    #39ff14;
+
+    // Mantem os widgets prontos (ComboBox/Button) coerentes com o tema:
+    // temas escuros (Escuro=1, Terminal=3) usam o esquema dark.
+    init => {
+        Palette.color-scheme = (root.tema == 1 || root.tema == 3) ? ColorScheme.dark : ColorScheme.light;
+    }
+    changed tema => {
+        Palette.color-scheme = (self.tema == 1 || self.tema == 3) ? ColorScheme.dark : ColorScheme.light;
+    }
+
     VerticalBox {
-        // Barra superior: botao de tema, alinhado a direita.
-        // A logica vive toda aqui no Slint: ler e reescrever Palette.color-scheme.
+        // Barra superior: rotulo + seletor de tema, alinhados a direita.
         HorizontalBox {
             alignment: end;
-            Button {
-                text: Palette.color-scheme == ColorScheme.dark ? "Tema claro" : "Tema escuro";
-                clicked => {
-                    Palette.color-scheme = Palette.color-scheme == ColorScheme.dark
-                        ? ColorScheme.light
-                        : ColorScheme.dark;
+            Text {
+                text: "Tema:";
+                vertical-alignment: center;
+            }
+            ComboBox {
+                model: ["Claro", "Escuro", "Sepia", "Terminal"];
+                current-index: 3;
+                selected => {
+                    root.tema = self.current-index;
                 }
             }
         }
 
-        TextEdit {
-            read-only: true;
-            text: root.console-text;
+        // NOSSO console: um Rectangle (fundo) com um Text (monospace) dentro.
+        // Como sao primitivos, controlamos cada cor -> quantos temas quisermos.
+        Rectangle {
+            background: root.cor-fundo;
+            border-width: 1px;
+            border-color: #80808080;
+            border-radius: 6px;
+
+            Text {
+                x: 14px;
+                y: 14px;
+                width: parent.width - 28px;
+                height: parent.height - 28px;
+                text: root.console-text;
+                color: root.cor-tinta;
+                font-family: "monospace";
+                font-size: 14px;
+                wrap: word-wrap;
+                vertical-alignment: top;
+                horizontal-alignment: left;
+            }
         }
 
         // Botao principal, estreito e centralizado.
