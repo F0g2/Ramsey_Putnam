@@ -24,6 +24,17 @@ impl Default for Parametros {
 // Tudo que acontece ANTES de apertar o botao: cria a janela, prepara o estado
 // (no futuro, pedir parametros aqui) e liga o botao a calcular().
 pub fn run() -> Result<(), slint::PlatformError> {
+    // Fonte monospace embutida no binario (DejaVu Sans Mono, licenca Bitstream
+    // Vera). Registrada ANTES de criar a UI, para ja estar disponivel ao render.
+    // Em Slint 1.17 isso passa pelo modulo fontique (feature instavel).
+    {
+        use std::sync::Arc;
+        let dados = include_bytes!("../ui/assets/fonts/DejaVuSansMono.ttf");
+        let blob = slint::fontique_010::fontique::Blob::new(Arc::new(dados.to_vec()));
+        let mut colecao = slint::fontique_010::shared_collection();
+        colecao.register_fonts(blob, None);
+    }
+
     let ui = MainWindow::new()?;
 
     ui.set_console_text(
