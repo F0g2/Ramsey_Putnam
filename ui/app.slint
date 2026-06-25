@@ -5,7 +5,7 @@ import { Button, VerticalBox, HorizontalBox, ComboBox, Palette } from "std-widge
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
-    icon: @image-url("assets/icone.svg");
+    icon: @image-url("assets/Penrose-dreieck.svg.png");
     preferred-width: 800px;
     preferred-height: 600px;
 
@@ -57,26 +57,34 @@ export component MainWindow inherits Window {
             }
         }
 
-        // NOSSO console: um Rectangle (fundo) com um Text (monospace) dentro.
+        // NOSSO console: Rectangle (fundo) + Flickable (rolagem) + Text (monospace).
         // Como sao primitivos, controlamos cada cor -> quantos temas quisermos.
         Rectangle {
             background: root.cor-fundo;
             border-width: 1px;
             border-color: #80808080;
             border-radius: 6px;
+            clip: true;
 
-            Text {
+            // Flickable rola seu "viewport". A altura do viewport e a altura
+            // total do texto; quando passa da area visivel, da pra rolar.
+            flick := Flickable {
                 x: 14px;
                 y: 14px;
                 width: parent.width - 28px;
                 height: parent.height - 28px;
-                text: root.console-text;
-                color: root.cor-tinta;
-                font-family: "monospace";
-                font-size: 14px;
-                wrap: word-wrap;
-                vertical-alignment: top;
-                horizontal-alignment: left;
+                viewport-width: self.width;          // sem rolagem horizontal
+                viewport-height: txt.preferred-height; // altura real do texto
+
+                txt := Text {
+                    width: flick.width;               // quebra na largura visivel
+                    text: root.console-text;
+                    color: root.cor-tinta;
+                    font-family: "monospace";
+                    font-size: 14px;
+                    wrap: word-wrap;
+                    horizontal-alignment: left;
+                }
             }
         }
 
