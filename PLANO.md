@@ -25,8 +25,9 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
       `global Estado` (aba, idioma). Sidebar/main ainda placeholders.
 - [x] **3. Sidebar (Principal)** — `stepper.slint` (s, t, n), dropdown Método
       (ComboBox por ora), botão Executar (primitivo). `sidebar.slint`.
-- [ ] **4. Coluna direita** — console por modelo de linhas coloridas +
-      `viz.slint` (área de visualização vazia).
+- [x] **4. Coluna direita** — console por modelo de linhas coloridas
+      (`types.slint` + `for`) alimentado por VecModel no Rust; `viz.slint`
+      (cabeçalho + legenda + painel vazio). Executar gera trace de demo.
 - [ ] **5. Acabamentos** — aba Avançado (toggle, timeout, threads, verbosidade),
       dropdowns via PopupWindow, i18n PT/EN/ES, cursor piscando.
 

@@ -1,0 +1,44 @@
+// Area de visualizacao: cabecalho (titulo + legenda) e um painel (vazio por ora).
+// O grafo de verdade entra quando o dominio existir.
+import { Tema } from "../theme.slint";
+import { Estado } from "../estado.slint";
+
+export component Viz inherits Rectangle {
+    VerticalLayout {
+        spacing: 9px;
+
+        // cabecalho: titulo a esquerda, legenda a direita
+        HorizontalLayout {
+            Text {
+                text: "VISUALIZAÇÃO";
+                color: Tema.label;
+                font-size: 10px;
+                font-weight: 600;
+                vertical-alignment: center;
+            }
+            Rectangle { }  // espacador
+            HorizontalLayout {
+                horizontal-stretch: 0;
+                spacing: 14px;
+                Text { text: "K\{Estado.s}"; color: Tema.edge-a; font-size: 10px; vertical-alignment: center; }
+                Text { text: "K\{Estado.t}"; color: Tema.edge-b; font-size: 10px; vertical-alignment: center; }
+            }
+        }
+
+        // painel
+        Rectangle {
+            vertical-stretch: 1;
+            background: Tema.console-bg;
+            border-width: 1px;
+            border-color: Tema.input-border;
+            border-radius: 5px;
+            Text {
+                x: (parent.width - self.width) / 2;
+                y: (parent.height - self.height) / 2;
+                text: "grafo em breve";
+                color: Tema.muted;
+                font-size: 12px;
+            }
+        }
+    }
+}

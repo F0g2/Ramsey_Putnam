@@ -1,9 +1,14 @@
 // PAINEL: importa os pedacos e os compoe. Le-se daqui o esqueleto do app.
 import { Palette } from "std-widgets.slint";
 import { Tema } from "theme.slint";
+import { LinhaConsole } from "types.slint";
 import { TopBar } from "components/topbar.slint";
 import { Sidebar } from "components/sidebar.slint";
+import { Viz } from "components/viz.slint";
 import { Console } from "components/console.slint";
+
+// Re-exporta o Estado para o Rust poder acessa-lo (ui.global::<Estado>()).
+export { Estado } from "estado.slint";
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
@@ -12,8 +17,8 @@ export component MainWindow inherits Window {
     preferred-height: 600px;
     background: Tema.win-bg;
 
-    // Texto do console, preenchido pelo Rust.
-    in property <string> console-text;
+    // Linhas do console, preenchidas pelo Rust.
+    in property <[LinhaConsole]> linhas;
     // Disparado pelo botao Executar.
     callback rodar();
 
@@ -35,30 +40,26 @@ export component MainWindow inherits Window {
                 executar => { root.rodar(); }
             }
 
-            // main (viz + console; viz vira grafo no futuro)
+            // main (visualizacao + log)
             Rectangle {
                 background: Tema.win-bg;
                 VerticalLayout {
                     padding: 16px;
                     spacing: 12px;
-                    // area de visualizacao (placeholder)
-                    Rectangle {
+
+                    Viz {
                         vertical-stretch: 1;
-                        background: Tema.console-bg;
-                        border-width: 1px;
-                        border-color: Tema.input-border;
-                        border-radius: 5px;
-                        Text {
-                            x: (parent.width - self.width) / 2;
-                            y: (parent.height - self.height) / 2;
-                            text: "Visualização (em breve)";
-                            color: Tema.muted;
-                            font-size: 12px;
-                        }
                     }
-                    // nosso console
+
+                    Text {
+                        text: "LOG DE EXECUÇÃO";
+                        color: Tema.label;
+                        font-size: 10px;
+                        font-weight: 600;
+                    }
+
                     Console {
-                        texto: root.console-text;
+                        linhas: root.linhas;
                         min-height: 150px;
                         max-height: 150px;
                     }

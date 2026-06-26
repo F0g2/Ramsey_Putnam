@@ -2,27 +2,9 @@
 // include_modules!() traz para ca o codigo gerado a partir de ui/app.slint.
 slint::include_modules!();
 
-use slint::ComponentHandle;
+use slint::{ComponentHandle, ModelRc, VecModel};
+use std::rc::Rc;
 
-// Parametros do calculo. Como o Rust NAO tem argumento default (ao contrario do
-// PHP), o padrao idiomatico e juntar tudo num struct e dar a ele um Default.
-// Depois da para sobrescrever so o que quiser: Parametros { n: 10, ..Default::default() }
-#[derive(Clone, Copy)]
-struct Parametros {
-    n: u32, // tamanho do grafo completo K_n
-    s: u32, // primeiro alvo de Ramsey, R(s, t)
-    t: u32, // segundo alvo de Ramsey, R(s, t)
-    k: u32, // sobra/extra, por enquanto so para variar
-}
-
-impl Default for Parametros {
-    fn default() -> Self {
-        Self { n: 6, s: 3, t: 3, k: 0 }
-    }
-}
-
-// Tudo que acontece ANTES de apertar o botao: cria a janela, prepara o estado
-// (no futuro, pedir parametros aqui) e liga o botao a calcular().
 pub fn run() -> Result<(), slint::PlatformError> {
     // Cria a janela PRIMEIRO: e isso que inicializa o backend/plataforma do
     // Slint. O registro de fonte via fontique (abaixo) exige a plataforma ja
@@ -40,39 +22,33 @@ pub fn run() -> Result<(), slint::PlatformError> {
         colecao.register_fonts(blob, None);
     }
 
+    // Modelo das linhas do console. VecModel e uma lista observavel: quando
+    // mudamos (set_vec/push), a UI se atualiza sozinha. Comeca vazio -> a UI
+    // mostra a dica "Configure os parametros...".
+    let linhas: Rc<VecModel<LinhaConsole>> = Rc::new(VecModel::default());
+    ui.set_linhas(ModelRc::from(linhas.clone()));
 
-    ui.set_console_text(
-        "Ramsey-Putnam — console grafico\n\
-         --------------------------------\n\
-         Clique no botao para comecar o calculo.\n\
-         \n"
-            .into(),
-    );
-
-    // O botao apenas delega: ao disparar 'rodar', chamamos calcular() com os
-    // valores default (por enquanto o botao so manda comecar).
+    // O botao Executar: por ora monta um TRACE de demonstracao (sem calculo
+    // real), lendo os parametros do global Estado pela API do Rust.
     let ui_weak = ui.as_weak();
+    let linhas_exec = linhas.clone();
     ui.on_rodar(move || {
         let Some(ui) = ui_weak.upgrade() else {
             return;
         };
-        calcular(&ui, Parametros::default());
+        let est = ui.global::<Estado>();
+        let s = est.get_s();
+        let t = est.get_t();
+        let n = est.get_n();
+
+        linhas_exec.set_vec(vec![
+            LinhaConsole { texto: format!("$ ramsey --n {n}  R({s},{t})").into(), tom: 2 },
+            LinhaConsole { texto: format!("[init]  n = {n} vertices · alvo R({s},{t})").into(), tom: 0 },
+            LinhaConsole { texto: format!("[scan]  enumerando 2-coloracoes de K_{n} ...").into(), tom: 0 },
+            LinhaConsole { texto: "[nota]  calculo real ainda nao implementado (demo)".into(), tom: 3 },
+            LinhaConsole { texto: "[ok]    interface pronta para receber o dominio".into(), tom: 1 },
+        ]);
     });
 
     ui.run()
-}
-
-// Acao principal, acionada pelo botao. Aqui vai ficar o grosso do codigo.
-// Por enquanto so devolve um valor dumb a partir dos parametros recebidos.
-fn calcular(ui: &MainWindow, p: Parametros) {
-    let arestas = p.n * (p.n - 1) / 2;
-
-    let atual = ui.get_console_text();
-    ui.set_console_text(
-        format!(
-            "{atual}calcular(n={}, s={}, t={}, k={}) -> K_{} tem {} arestas.\n",
-            p.n, p.s, p.t, p.k, p.n, arestas,
-        )
-        .into(),
-    );
 }

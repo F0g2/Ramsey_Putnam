@@ -1,9 +1,10 @@
-// Nosso console: fundo + texto monospace, com cores 100% vindas do Tema.
-// E um componente reutilizavel: recebe o texto via propriedade `texto`.
+// Nosso console: agora um MODELO de linhas coloridas (nao mais um texto unico).
+// Cada linha tem um 'tom' que mapeia para uma cor do Tema.
 import { Tema } from "../theme.slint";
+import { LinhaConsole } from "../types.slint";
 
 export component Console inherits Rectangle {
-    in property <string> texto;
+    in property <[LinhaConsole]> linhas;
 
     background: Tema.console-bg;
     border-width: 1px;
@@ -12,21 +13,37 @@ export component Console inherits Rectangle {
     clip: true;
 
     flick := Flickable {
-        x: 14px;
-        y: 14px;
-        width: parent.width - 28px;
-        height: parent.height - 28px;
+        x: 12px;
+        y: 12px;
+        width: parent.width - 24px;
+        height: parent.height - 24px;
         viewport-width: self.width;
-        viewport-height: txt.preferred-height;
+        viewport-height: col.preferred-height;
 
-        txt := Text {
+        col := VerticalLayout {
             width: flick.width;
-            text: root.texto;
-            color: Tema.console-text;
-            font-family: "DejaVu Sans Mono";
-            font-size: 14px;
-            wrap: word-wrap;
-            horizontal-alignment: left;
+            spacing: 2px;
+
+            // dica quando vazio
+            if root.linhas.length == 0: Text {
+                text: "Configure os parametros e clique em Executar.";
+                color: Tema.console-dim;
+                font-family: "DejaVu Sans Mono";
+                font-size: 13px;
+                wrap: word-wrap;
+            }
+
+            // uma Text por linha do modelo
+            for ln in root.linhas: Text {
+                text: ln.texto;
+                color: ln.tom == 1 ? Tema.accent
+                     : ln.tom == 2 ? Tema.console-text
+                     : ln.tom == 3 ? Tema.console-dim
+                     : Tema.text;
+                font-family: "DejaVu Sans Mono";
+                font-size: 13px;
+                wrap: word-wrap;
+            }
         }
     }
 }
