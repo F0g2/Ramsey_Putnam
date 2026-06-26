@@ -4,7 +4,7 @@ import { Tema } from "../theme.slint";
 import { Estado } from "../estado.slint";
 import { Stepper } from "stepper.slint";
 import { Switch } from "switch.slint";
-import { ComboBox } from "std-widgets.slint";
+import { Dropdown } from "dropdown.slint";
 
 export component Sidebar inherits Rectangle {
     callback executar;
@@ -31,9 +31,9 @@ export component Sidebar inherits Rectangle {
             VerticalLayout {
                 spacing: 7px;
                 Text { text: "MÉTODO"; color: Tema.label; font-size: 10px; font-weight: 600; }
-                ComboBox {
-                    model: Estado.metodos;
-                    current-index <=> Estado.metodo;
+                Dropdown {
+                    opcoes: Estado.metodos;
+                    indice <=> Estado.metodo;
                 }
             }
 
@@ -100,9 +100,9 @@ export component Sidebar inherits Rectangle {
             if Estado.metodo == 1: VerticalLayout {
                 spacing: 7px;
                 Text { text: "Backend SAT"; color: Tema.label; font-size: 10px; font-weight: 600; }
-                ComboBox {
-                    model: Estado.backends;
-                    current-index <=> Estado.backend;
+                Dropdown {
+                    opcoes: Estado.backends;
+                    indice <=> Estado.backend;
                 }
             }
 
@@ -110,9 +110,9 @@ export component Sidebar inherits Rectangle {
             VerticalLayout {
                 spacing: 7px;
                 Text { text: "Verbosidade do log"; color: Tema.label; font-size: 10px; font-weight: 600; }
-                ComboBox {
-                    model: Estado.verbosidades;
-                    current-index <=> Estado.verbosidade;
+                Dropdown {
+                    opcoes: Estado.verbosidades;
+                    indice <=> Estado.verbosidade;
                 }
             }
         }

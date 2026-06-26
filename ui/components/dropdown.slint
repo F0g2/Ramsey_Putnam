@@ -1,0 +1,86 @@
+// Dropdown custom (primitivo + PopupWindow), para seguir os temas.
+// 'opcoes' e a lista; 'indice' e a selecao (in-out, two-way com o estado).
+// O PopupWindow fecha sozinho ao clicar fora.
+import { Tema } from "../theme.slint";
+
+export component Dropdown inherits Rectangle {
+    in property <[string]> opcoes;
+    in-out property <int> indice;
+
+    min-height: 34px;
+    max-height: 34px;
+    border-width: 1px;
+    border-color: Tema.input-border;
+    border-radius: 4px;
+    background: Tema.input-bg;
+
+    // botao: rotulo atual + seta
+    HorizontalLayout {
+        padding-left: 11px;
+        padding-right: 11px;
+        spacing: 6px;
+        Text {
+            horizontal-stretch: 1;
+            text: root.opcoes[root.indice];
+            color: Tema.text;
+            vertical-alignment: center;
+            font-size: 13px;
+            overflow: elide;
+        }
+        Text {
+            text: "▾";
+            color: Tema.muted;
+            vertical-alignment: center;
+            font-size: 11px;
+        }
+    }
+
+    TouchArea {
+        clicked => { popup.show(); }
+    }
+
+    popup := PopupWindow {
+        x: 0;
+        y: root.height + 5px;
+        width: root.width;
+        height: root.opcoes.length * 32px + 8px;
+
+        Rectangle {
+            background: Tema.input-bg;
+            border-width: 1px;
+            border-color: Tema.input-border;
+            border-radius: 5px;
+
+            VerticalLayout {
+                padding: 4px;
+                spacing: 2px;
+                alignment: start;
+
+                for opt[i] in root.opcoes: Rectangle {
+                    min-height: 30px;
+                    max-height: 30px;
+                    border-radius: 3px;
+                    background: linha.has-hover ? Tema.accent : transparent;
+
+                    HorizontalLayout {
+                        padding-left: 9px;
+                        padding-right: 9px;
+                        Text {
+                            text: opt;
+                            vertical-alignment: center;
+                            font-size: 13px;
+                            color: linha.has-hover ? Tema.win-bg
+                                 : (i == root.indice ? Tema.accent : Tema.text);
+                        }
+                    }
+                    linha := TouchArea {
+                        clicked => {
+                            root.indice = i;
+                            popup.close();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

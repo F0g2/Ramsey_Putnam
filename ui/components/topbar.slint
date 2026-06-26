@@ -3,7 +3,7 @@
 // Os seletores usam ComboBox por ora (viram PopupWindow custom no Passo 5).
 import { Tema } from "../theme.slint";
 import { Estado } from "../estado.slint";
-import { ComboBox } from "std-widgets.slint";
+import { Dropdown } from "dropdown.slint";
 
 // Uma aba do "segmented control".
 component Aba inherits Rectangle {
@@ -75,9 +75,10 @@ export component TopBar inherits Rectangle {
                 color: Tema.muted;
                 font-size: 11px;
             }
-            ComboBox {
-                model: Estado.idiomas;
-                current-index <=> Estado.idioma;
+            Dropdown {
+                min-width: 128px;
+                opcoes: Estado.idiomas;
+                indice <=> Estado.idioma;
             }
             Text {
                 text: "TEMA";
@@ -85,9 +86,10 @@ export component TopBar inherits Rectangle {
                 color: Tema.muted;
                 font-size: 11px;
             }
-            ComboBox {
-                model: Tema.nomes;
-                current-index <=> Tema.id;
+            Dropdown {
+                min-width: 128px;
+                opcoes: Tema.nomes;
+                indice <=> Tema.id;
             }
         }
     }

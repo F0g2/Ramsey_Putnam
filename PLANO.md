@@ -30,7 +30,9 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
       (cabeçalho + legenda + painel vazio). Executar gera trace de demo.
 - [x] **5a. Aba Avançado** — toggle (Switch animado), tempo limite, threads,
       backend SAT (condicional), verbosidade. n: mínimo 1, default 4.
-- [ ] **5b. Dropdowns via PopupWindow** — substituir os ComboBox por menu custom.
+- [x] **5b. Dropdowns via PopupWindow** — componente `dropdown.slint`
+      (PopupWindow + hover); substitui os ComboBox (idioma, tema, método,
+      backend, verbosidade).
 - [ ] **5c. i18n PT/EN/ES** — global Textos; trocar labels pelo idioma.
 - [ ] **5d. Cursor piscando** no log (estado "executando").
 
