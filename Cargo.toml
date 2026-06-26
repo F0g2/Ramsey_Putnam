@@ -8,3 +8,9 @@ slint = { version = "1", features = ["unstable-fontique-010"] }
 
 [build-dependencies]
 slint-build = "1"
+
+# So no build web (wasm): backend JS do getrandom + panic hook (erros no console).
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1"
+getrandom_03 = { package = "getrandom", version = "0.3", features = ["wasm_js"] }
+getrandom_04 = { package = "getrandom", version = "0.4", features = ["wasm_js"] }

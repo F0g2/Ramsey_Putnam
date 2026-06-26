@@ -1,0 +1,5 @@
+# Para o build WebAssembly: seleciona o backend JS do getrandom.
+# Sem isto, getrandom (0.3/0.4) nao tem fonte de aleatoriedade no wasm e
+# falha em runtime (tela em branco). So afeta o target wasm; desktop intacto.
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
