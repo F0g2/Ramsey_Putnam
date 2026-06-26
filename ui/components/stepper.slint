@@ -1,11 +1,16 @@
 // Caixa "− valor +" reutilizavel. 'valor' e in-out (two-way com o estado),
-// limitado entre 'mini' e 'maxi'. Tudo primitivo, para seguir os temas.
+// limitado entre 'mini' e 'maxi', com incremento 'passo'.
+// Opcional: 'rotulo' (texto mostrado quando valor==0, ex.: "sem limite") e
+// 'sufixo' (ex.: "s" para segundos).
 import { Tema } from "../theme.slint";
 
 export component Stepper inherits Rectangle {
     in-out property <int> valor;
     in property <int> mini: 0;
     in property <int> maxi: 100;
+    in property <int> passo: 1;
+    in property <string> rotulo: "";
+    in property <string> sufixo: "";
 
     min-height: 34px;
     max-height: 34px;
@@ -28,13 +33,13 @@ export component Stepper inherits Rectangle {
                 font-size: 16px;
             }
             TouchArea {
-                clicked => { root.valor = Math.max(root.mini, root.valor - 1); }
+                clicked => { root.valor = Math.max(root.mini, root.valor - root.passo); }
             }
         }
         // valor
         Text {
             horizontal-stretch: 1;
-            text: "\{root.valor}";
+            text: (root.rotulo != "" && root.valor == 0) ? root.rotulo : "\{root.valor}\{root.sufixo}";
             horizontal-alignment: center;
             vertical-alignment: center;
             color: Tema.text;
@@ -53,7 +58,7 @@ export component Stepper inherits Rectangle {
                 font-size: 16px;
             }
             TouchArea {
-                clicked => { root.valor = Math.min(root.maxi, root.valor + 1); }
+                clicked => { root.valor = Math.min(root.maxi, root.valor + root.passo); }
             }
         }
     }

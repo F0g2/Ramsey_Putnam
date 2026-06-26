@@ -1,0 +1,28 @@
+// Toggle on/off animado (primitivo, segue o tema). 'ligado' e in-out.
+import { Tema } from "../theme.slint";
+
+export component Switch inherits Rectangle {
+    in-out property <bool> ligado;
+
+    min-width: 42px;
+    max-width: 42px;
+    min-height: 23px;
+    max-height: 23px;
+    border-radius: 12px;
+    background: ligado ? Tema.accent : Tema.input-border;
+    animate background { duration: 150ms; }
+
+    knob := Rectangle {
+        width: 17px;
+        height: 17px;
+        border-radius: 9px;
+        background: Tema.btn-text;
+        y: (parent.height - self.height) / 2;
+        x: ligado ? parent.width - self.width - 3px : 3px;
+        animate x { duration: 150ms; }
+    }
+
+    TouchArea {
+        clicked => { root.ligado = !root.ligado; }
+    }
+}

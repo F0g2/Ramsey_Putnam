@@ -1,8 +1,9 @@
-// Sidebar: parametros (aba Principal) e o botao Executar.
-// A aba Avançado entra no Passo 5. Le/escreve o Estado.
+// Sidebar: parametros (Principal) e opcoes (Avançado), + botao Executar.
+// Le/escreve o Estado. Dropdowns ainda via ComboBox (viram PopupWindow no 5b).
 import { Tema } from "../theme.slint";
 import { Estado } from "../estado.slint";
 import { Stepper } from "stepper.slint";
+import { Switch } from "switch.slint";
 import { ComboBox } from "std-widgets.slint";
 
 export component Sidebar inherits Rectangle {
@@ -27,7 +28,6 @@ export component Sidebar inherits Rectangle {
         if Estado.aba == 0: VerticalLayout {
             spacing: 16px;
 
-            // Método
             VerticalLayout {
                 spacing: 7px;
                 Text { text: "MÉTODO"; color: Tema.label; font-size: 10px; font-weight: 600; }
@@ -37,7 +37,6 @@ export component Sidebar inherits Rectangle {
                 }
             }
 
-            // R(s, t)
             VerticalLayout {
                 spacing: 5px;
                 Text { text: "R( s , t )"; color: Tema.label; font-size: 10px; font-weight: 600; }
@@ -52,19 +51,70 @@ export component Sidebar inherits Rectangle {
                 }
             }
 
-            // n (vertices)
             VerticalLayout {
                 spacing: 7px;
                 Text { text: "Número de vértices  n"; color: Tema.label; font-size: 10px; font-weight: 600; }
-                Stepper { valor <=> Estado.n; mini: 2; maxi: 1000; }
+                Stepper { valor <=> Estado.n; mini: 1; maxi: 1000; }
             }
         }
 
-        // ===== Aba Avançado (Passo 5) =====
-        if Estado.aba == 1: Text {
-            text: "(controles avançados — Passo 5)";
-            color: Tema.muted;
-            font-size: 12px;
+        // ===== Aba Avançado =====
+        if Estado.aba == 1: VerticalLayout {
+            spacing: 16px;
+
+            // quebra de simetria (toggle)
+            HorizontalLayout {
+                Text {
+                    text: "Quebra de simetria";
+                    color: Tema.label;
+                    font-size: 10px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+                Rectangle { }  // espacador
+                Switch { ligado <=> Estado.sym; }
+            }
+
+            // tempo limite
+            VerticalLayout {
+                spacing: 7px;
+                Text { text: "Tempo limite"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                Stepper {
+                    valor <=> Estado.timeout;
+                    mini: 0;
+                    maxi: 600;
+                    passo: 30;
+                    rotulo: "sem limite";
+                    sufixo: "s";
+                }
+            }
+
+            // paralelismo
+            VerticalLayout {
+                spacing: 7px;
+                Text { text: "Paralelismo (threads)"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                Stepper { valor <=> Estado.threads; mini: 1; maxi: 16; }
+            }
+
+            // backend SAT (so quando metodo == SAT)
+            if Estado.metodo == 1: VerticalLayout {
+                spacing: 7px;
+                Text { text: "Backend SAT"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                ComboBox {
+                    model: Estado.backends;
+                    current-index <=> Estado.backend;
+                }
+            }
+
+            // verbosidade
+            VerticalLayout {
+                spacing: 7px;
+                Text { text: "Verbosidade do log"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                ComboBox {
+                    model: Estado.verbosidades;
+                    current-index <=> Estado.verbosidade;
+                }
+            }
         }
 
         // espacador: empurra o botao para baixo

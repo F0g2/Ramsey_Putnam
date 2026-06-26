@@ -28,8 +28,11 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
 - [x] **4. Coluna direita** — console por modelo de linhas coloridas
       (`types.slint` + `for`) alimentado por VecModel no Rust; `viz.slint`
       (cabeçalho + legenda + painel vazio). Executar gera trace de demo.
-- [ ] **5. Acabamentos** — aba Avançado (toggle, timeout, threads, verbosidade),
-      dropdowns via PopupWindow, i18n PT/EN/ES, cursor piscando.
+- [x] **5a. Aba Avançado** — toggle (Switch animado), tempo limite, threads,
+      backend SAT (condicional), verbosidade. n: mínimo 1, default 4.
+- [ ] **5b. Dropdowns via PopupWindow** — substituir os ComboBox por menu custom.
+- [ ] **5c. i18n PT/EN/ES** — global Textos; trocar labels pelo idioma.
+- [ ] **5d. Cursor piscando** no log (estado "executando").
 
 ## Estrutura de arquivos (alvo)
 
