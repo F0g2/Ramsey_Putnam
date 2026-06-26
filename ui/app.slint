@@ -1,6 +1,7 @@
 // PAINEL: importa os pedacos e os compoe. Le-se daqui o esqueleto do app.
 import { Palette } from "std-widgets.slint";
 import { Tema } from "theme.slint";
+import { Textos } from "strings.slint";
 import { LinhaConsole } from "types.slint";
 import { TopBar } from "components/topbar.slint";
 import { Sidebar } from "components/sidebar.slint";
@@ -52,7 +53,7 @@ export component MainWindow inherits Window {
                     }
 
                     Text {
-                        text: "LOG DE EXECUÇÃO";
+                        text: Textos.x.log;
                         color: Tema.label;
                         font-size: 10px;
                         font-weight: 600;

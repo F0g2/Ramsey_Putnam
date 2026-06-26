@@ -2,6 +2,7 @@
 // O grafo de verdade entra quando o dominio existir.
 import { Tema } from "../theme.slint";
 import { Estado } from "../estado.slint";
+import { Textos } from "../strings.slint";
 
 export component Viz inherits Rectangle {
     VerticalLayout {
@@ -10,7 +11,7 @@ export component Viz inherits Rectangle {
         // cabecalho: titulo a esquerda, legenda a direita
         HorizontalLayout {
             Text {
-                text: "VISUALIZAÇÃO";
+                text: Textos.x.viz;
                 color: Tema.label;
                 font-size: 10px;
                 font-weight: 600;
@@ -35,7 +36,7 @@ export component Viz inherits Rectangle {
             Text {
                 x: (parent.width - self.width) / 2;
                 y: (parent.height - self.height) / 2;
-                text: "grafo em breve";
+                text: Textos.x.grafo;
                 color: Tema.muted;
                 font-size: 12px;
             }

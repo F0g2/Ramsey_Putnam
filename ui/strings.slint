@@ -1,0 +1,79 @@
+// Textos da interface por idioma (i18n). Um struct com todas as frases, uma
+// linha por idioma, indexado por Estado.idioma. Trocar de idioma reavalia tudo.
+import { Estado } from "estado.slint";
+
+struct Txt {
+    params: string,
+    avancado: string,
+    metodo: string,
+    vertices: string,
+    simetria: string,
+    tempo: string,
+    semLimite: string,
+    threads: string,
+    backendSat: string,
+    verbosidade: string,
+    executar: string,
+    lblIdioma: string,
+    lblTema: string,
+    tabPrincipal: string,
+    tabAvancado: string,
+    viz: string,
+    grafo: string,
+    log: string,
+    vazio: string,
+}
+
+export global Textos {
+    out property <[Txt]> tabela: [
+        // 0 — Português
+        {
+            params: "PARÂMETROS", avancado: "AVANÇADO",
+            metodo: "MÉTODO", vertices: "Número de vértices  n",
+            simetria: "Quebra de simetria", tempo: "Tempo limite", semLimite: "sem limite",
+            threads: "Paralelismo (threads)", backendSat: "Backend SAT",
+            verbosidade: "Verbosidade do log", executar: "Executar",
+            lblIdioma: "IDIOMA", lblTema: "TEMA",
+            tabPrincipal: "Principal", tabAvancado: "Avançado",
+            viz: "VISUALIZAÇÃO", grafo: "grafo em breve",
+            log: "LOG DE EXECUÇÃO", vazio: "Configure os parametros e clique em Executar.",
+        },
+        // 1 — English
+        {
+            params: "PARAMETERS", avancado: "ADVANCED",
+            metodo: "METHOD", vertices: "Number of vertices  n",
+            simetria: "Symmetry breaking", tempo: "Time limit", semLimite: "no limit",
+            threads: "Parallelism (threads)", backendSat: "SAT backend",
+            verbosidade: "Log verbosity", executar: "Run",
+            lblIdioma: "LANGUAGE", lblTema: "THEME",
+            tabPrincipal: "Main", tabAvancado: "Advanced",
+            viz: "VISUALIZATION", grafo: "graph soon",
+            log: "EXECUTION LOG", vazio: "Set the parameters and click Run.",
+        },
+        // 2 — Español
+        {
+            params: "PARÁMETROS", avancado: "AVANZADO",
+            metodo: "MÉTODO", vertices: "Número de vértices  n",
+            simetria: "Ruptura de simetría", tempo: "Límite de tiempo", semLimite: "sin límite",
+            threads: "Paralelismo (hilos)", backendSat: "Backend SAT",
+            verbosidade: "Verbosidad del registro", executar: "Ejecutar",
+            lblIdioma: "IDIOMA", lblTema: "TEMA",
+            tabPrincipal: "Principal", tabAvancado: "Avanzado",
+            viz: "VISUALIZACIÓN", grafo: "grafo pronto",
+            log: "REGISTRO DE EJECUCIÓN", vazio: "Configura los parámetros y haz clic en Ejecutar.",
+        },
+    ];
+
+    // Linha do idioma atual.
+    out property <Txt> x: tabela[Estado.idioma];
+
+    // Listas traduziveis (as opcoes dos dropdowns).
+    out property <[string]> metodos:
+        Estado.idioma == 1 ? ["Enumeration", "SAT"]
+      : Estado.idioma == 2 ? ["Enumeración", "SAT"]
+      :                      ["Enumeração", "SAT"];
+    out property <[string]> verbosidades:
+        Estado.idioma == 1 ? ["Silent", "Normal", "Detailed"]
+      : Estado.idioma == 2 ? ["Silenciosa", "Normal", "Detallada"]
+      :                      ["Silenciosa", "Normal", "Detalhada"];
+}

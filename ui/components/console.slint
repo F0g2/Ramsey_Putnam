@@ -1,6 +1,7 @@
 // Nosso console: agora um MODELO de linhas coloridas (nao mais um texto unico).
 // Cada linha tem um 'tom' que mapeia para uma cor do Tema.
 import { Tema } from "../theme.slint";
+import { Textos } from "../strings.slint";
 import { LinhaConsole } from "../types.slint";
 
 export component Console inherits Rectangle {
@@ -26,7 +27,7 @@ export component Console inherits Rectangle {
 
             // dica quando vazio
             if root.linhas.length == 0: Text {
-                text: "Configure os parametros e clique em Executar.";
+                text: Textos.x.vazio;
                 color: Tema.console-dim;
                 font-family: "DejaVu Sans Mono";
                 font-size: 13px;

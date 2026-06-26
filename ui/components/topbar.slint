@@ -3,6 +3,7 @@
 // Os seletores usam ComboBox por ora (viram PopupWindow custom no Passo 5).
 import { Tema } from "../theme.slint";
 import { Estado } from "../estado.slint";
+import { Textos } from "../strings.slint";
 import { Dropdown } from "dropdown.slint";
 
 // Uma aba do "segmented control".
@@ -50,12 +51,12 @@ export component TopBar inherits Rectangle {
                 padding: 3px;
                 spacing: 4px;
                 Aba {
-                    rotulo: "Principal";
+                    rotulo: Textos.x.tabPrincipal;
                     ativa: Estado.aba == 0;
                     clicado => { Estado.aba = 0; }
                 }
                 Aba {
-                    rotulo: "Avançado";
+                    rotulo: Textos.x.tabAvancado;
                     ativa: Estado.aba == 1;
                     clicado => { Estado.aba = 1; }
                 }
@@ -70,7 +71,7 @@ export component TopBar inherits Rectangle {
             horizontal-stretch: 0;
             spacing: 9px;
             Text {
-                text: "IDIOMA";
+                text: Textos.x.lblIdioma;
                 vertical-alignment: center;
                 color: Tema.muted;
                 font-size: 11px;
@@ -81,7 +82,7 @@ export component TopBar inherits Rectangle {
                 indice <=> Estado.idioma;
             }
             Text {
-                text: "TEMA";
+                text: Textos.x.lblTema;
                 vertical-alignment: center;
                 color: Tema.muted;
                 font-size: 11px;

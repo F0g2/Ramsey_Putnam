@@ -33,7 +33,8 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
 - [x] **5b. Dropdowns via PopupWindow** — componente `dropdown.slint`
       (PopupWindow + hover); substitui os ComboBox (idioma, tema, método,
       backend, verbosidade).
-- [ ] **5c. i18n PT/EN/ES** — global Textos; trocar labels pelo idioma.
+- [x] **5c. i18n PT/EN/ES** — `strings.slint` (global Textos: struct por idioma).
+      Todos os labels e as opções de método/verbosidade trocam pelo seletor.
 - [ ] **5d. Cursor piscando** no log (estado "executando").
 
 ## Estrutura de arquivos (alvo)

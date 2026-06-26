@@ -12,8 +12,6 @@ export global Estado {
     in-out property <int> t: 3;
     in-out property <int> n: 4;       // numero de vertices (default pequeno)
 
-    out property <[string]> metodos: ["Enumeração", "SAT"];
-
     // ---- Avançado ----
     in-out property <bool> sym: true;        // quebra de simetria
     in-out property <int> timeout: 0;        // segundos; 0 = sem limite
@@ -22,5 +20,4 @@ export global Estado {
     in-out property <int> verbosidade: 1;    // indice em 'verbosidades'
 
     out property <[string]> backends: ["CaDiCaL", "Glucose", "MiniSat"];
-    out property <[string]> verbosidades: ["Silenciosa", "Normal", "Detalhada"];
 }
