@@ -76,4 +76,10 @@ export global Textos {
         Estado.idioma == 1 ? ["Silent", "Normal", "Detailed"]
       : Estado.idioma == 2 ? ["Silenciosa", "Normal", "Detallada"]
       :                      ["Silenciosa", "Normal", "Detalhada"];
+
+    // Nomes dos temas (Terminal/Nord sao nomes proprios; Âmbar/Claro traduzem).
+    out property <[string]> temas:
+        Estado.idioma == 1 ? ["Terminal", "Amber (CRT)", "Nord", "Light"]
+      : Estado.idioma == 2 ? ["Terminal", "Ámbar (CRT)", "Nord", "Claro"]
+      :                      ["Terminal", "Âmbar (CRT)", "Nord", "Claro"];
 }

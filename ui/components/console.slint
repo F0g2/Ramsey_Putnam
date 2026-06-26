@@ -6,6 +6,14 @@ import { LinhaConsole } from "../types.slint";
 
 export component Console inherits Rectangle {
     in property <[LinhaConsole]> linhas;
+    property <bool> cursor-on: true;
+
+    // Pisca o cursor a cada ~0.5s (Timer e um elemento nao-visual).
+    Timer {
+        interval: 530ms;
+        running: true;
+        triggered => { root.cursor-on = !root.cursor-on; }
+    }
 
     background: Tema.console-bg;
     border-width: 1px;
@@ -44,6 +52,19 @@ export component Console inherits Rectangle {
                 font-family: "DejaVu Sans Mono";
                 font-size: 13px;
                 wrap: word-wrap;
+            }
+
+            // cursor piscando (so quando ha linhas)
+            if root.linhas.length > 0: HorizontalLayout {
+                alignment: start;
+                Rectangle {
+                    min-width: 7px;
+                    max-width: 7px;
+                    min-height: 15px;
+                    max-height: 15px;
+                    background: Tema.console-text;
+                    opacity: root.cursor-on ? 1.0 : 0.0;
+                }
             }
         }
     }

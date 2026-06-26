@@ -35,7 +35,8 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
       backend, verbosidade).
 - [x] **5c. i18n PT/EN/ES** — `strings.slint` (global Textos: struct por idioma).
       Todos os labels e as opções de método/verbosidade trocam pelo seletor.
-- [ ] **5d. Cursor piscando** no log (estado "executando").
+- [x] **5d. Cursor piscando** no log (Timer alternando a opacidade).
+- [x] **5e. Nomes dos temas no i18n** (Âmbar/Claro traduzem; Terminal/Nord não).
 
 ## Estrutura de arquivos (alvo)
 
