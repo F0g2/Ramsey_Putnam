@@ -1,0 +1,31 @@
+name: Build Windows
+
+# Disparo manual (aba Actions -> Build Windows -> Run workflow).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # necessario para criar o Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Atualiza Rust (edition 2024 precisa 1.85+)
+        shell: bash
+        run: rustup update stable && rustup default stable
+
+      - name: Compila em release
+        run: cargo build --release
+
+      - name: Publica o .exe num Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete windows-build -y --cleanup-tag || true
+          gh release create windows-build "target/release/ramsey_putnam.exe" \
+            --title "App desktop (Windows)" \
+            --notes "Build automatico (Windows x64). O SmartScreen pode avisar que o autor e desconhecido: clique em 'Mais informacoes' -> 'Executar assim mesmo'."
