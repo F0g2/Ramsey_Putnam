@@ -1,0 +1,60 @@
+// Caixa "− valor +" reutilizavel. 'valor' e in-out (two-way com o estado),
+// limitado entre 'mini' e 'maxi'. Tudo primitivo, para seguir os temas.
+import { Tema } from "../theme.slint";
+
+export component Stepper inherits Rectangle {
+    in-out property <int> valor;
+    in property <int> mini: 0;
+    in property <int> maxi: 100;
+
+    min-height: 34px;
+    max-height: 34px;
+    border-width: 1px;
+    border-color: Tema.input-border;
+    border-radius: 4px;
+    background: Tema.input-bg;
+    clip: true;
+
+    HorizontalLayout {
+        // −
+        Rectangle {
+            min-width: 32px;
+            max-width: 32px;
+            Text {
+                x: (parent.width - self.width) / 2;
+                y: (parent.height - self.height) / 2;
+                text: "−";
+                color: Tema.muted;
+                font-size: 16px;
+            }
+            TouchArea {
+                clicked => { root.valor = Math.max(root.mini, root.valor - 1); }
+            }
+        }
+        // valor
+        Text {
+            horizontal-stretch: 1;
+            text: "\{root.valor}";
+            horizontal-alignment: center;
+            vertical-alignment: center;
+            color: Tema.text;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        // +
+        Rectangle {
+            min-width: 32px;
+            max-width: 32px;
+            Text {
+                x: (parent.width - self.width) / 2;
+                y: (parent.height - self.height) / 2;
+                text: "+";
+                color: Tema.muted;
+                font-size: 16px;
+            }
+            TouchArea {
+                clicked => { root.valor = Math.min(root.maxi, root.valor + 1); }
+            }
+        }
+    }
+}

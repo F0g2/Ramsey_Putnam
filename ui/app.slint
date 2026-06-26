@@ -1,8 +1,8 @@
 // PAINEL: importa os pedacos e os compoe. Le-se daqui o esqueleto do app.
-import { Button, Palette } from "std-widgets.slint";
+import { Palette } from "std-widgets.slint";
 import { Tema } from "theme.slint";
-import { Estado } from "estado.slint";
 import { TopBar } from "components/topbar.slint";
+import { Sidebar } from "components/sidebar.slint";
 import { Console } from "components/console.slint";
 
 export component MainWindow inherits Window {
@@ -30,41 +30,12 @@ export component MainWindow inherits Window {
         TopBar { }
 
         HorizontalLayout {
-            // ---- Sidebar (controles entram no Passo 3) ----
-            Rectangle {
-                min-width: 268px;
-                max-width: 268px;
-                background: Tema.panel-bg;
-
-                VerticalLayout {
-                    padding: 18px;
-                    spacing: 16px;
-                    Text {
-                        text: Estado.aba == 0 ? "PARÂMETROS" : "AVANÇADO";
-                        color: Tema.section;
-                        font-size: 11px;
-                        font-weight: 700;
-                    }
-                    Text {
-                        text: "(controles — Passo 3)";
-                        color: Tema.muted;
-                        font-size: 12px;
-                    }
-                    Rectangle { }  // espacador: empurra o botao para baixo
-                    Button {
-                        text: "Executar";
-                        clicked => { root.rodar(); }
-                    }
-                }
-                // linha divisoria a direita
-                Rectangle {
-                    x: parent.width - 1px;
-                    width: 1px;
-                    background: Tema.border;
-                }
+            // sidebar (parametros + Executar)
+            Sidebar {
+                executar => { root.rodar(); }
             }
 
-            // ---- Main (viz + console entram no Passo 4) ----
+            // main (viz + console; viz vira grafo no futuro)
             Rectangle {
                 background: Tema.win-bg;
                 VerticalLayout {

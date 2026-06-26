@@ -23,8 +23,8 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
 - [x] **2. Esqueleto da janela** — barra nativa + `topbar.slint` (abas
       Principal/Avançado + seletores idioma/tema) + divisão sidebar/main.
       `global Estado` (aba, idioma). Sidebar/main ainda placeholders.
-- [ ] **3. Sidebar (Principal)** — `stepper.slint` (s, t, n), dropdown Método,
-      botão Executar (sem ação).
+- [x] **3. Sidebar (Principal)** — `stepper.slint` (s, t, n), dropdown Método
+      (ComboBox por ora), botão Executar (primitivo). `sidebar.slint`.
 - [ ] **4. Coluna direita** — console por modelo de linhas coloridas +
       `viz.slint` (área de visualização vazia).
 - [ ] **5. Acabamentos** — aba Avançado (toggle, timeout, threads, verbosidade),

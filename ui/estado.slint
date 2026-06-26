@@ -5,4 +5,12 @@ export global Estado {
     in-out property <int> idioma: 0;  // 0 PT · 1 EN · 2 ES
 
     out property <[string]> idiomas: ["Português", "English", "Español"];
+
+    // ---- Parametros (aba Principal) ----
+    in-out property <int> metodo: 0;  // 0 Enumeração · 1 SAT
+    in-out property <int> s: 3;
+    in-out property <int> t: 3;
+    in-out property <int> n: 6;       // numero de vertices
+
+    out property <[string]> metodos: ["Enumeração", "SAT"];
 }

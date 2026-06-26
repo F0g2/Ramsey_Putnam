@@ -1,0 +1,99 @@
+// Sidebar: parametros (aba Principal) e o botao Executar.
+// A aba Avançado entra no Passo 5. Le/escreve o Estado.
+import { Tema } from "../theme.slint";
+import { Estado } from "../estado.slint";
+import { Stepper } from "stepper.slint";
+import { ComboBox } from "std-widgets.slint";
+
+export component Sidebar inherits Rectangle {
+    callback executar;
+
+    min-width: 268px;
+    max-width: 268px;
+    background: Tema.panel-bg;
+
+    VerticalLayout {
+        padding: 18px;
+        spacing: 16px;
+
+        Text {
+            text: Estado.aba == 0 ? "PARÂMETROS" : "AVANÇADO";
+            color: Tema.section;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        // ===== Aba Principal =====
+        if Estado.aba == 0: VerticalLayout {
+            spacing: 16px;
+
+            // Método
+            VerticalLayout {
+                spacing: 7px;
+                Text { text: "MÉTODO"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                ComboBox {
+                    model: Estado.metodos;
+                    current-index <=> Estado.metodo;
+                }
+            }
+
+            // R(s, t)
+            VerticalLayout {
+                spacing: 5px;
+                Text { text: "R( s , t )"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                HorizontalLayout {
+                    spacing: 9px;
+                    Stepper { valor <=> Estado.s; mini: 2; maxi: 9; }
+                    Stepper { valor <=> Estado.t; mini: 2; maxi: 9; }
+                }
+                HorizontalLayout {
+                    Text { horizontal-stretch: 1; text: "s"; horizontal-alignment: center; color: Tema.muted; font-size: 9px; }
+                    Text { horizontal-stretch: 1; text: "t"; horizontal-alignment: center; color: Tema.muted; font-size: 9px; }
+                }
+            }
+
+            // n (vertices)
+            VerticalLayout {
+                spacing: 7px;
+                Text { text: "Número de vértices  n"; color: Tema.label; font-size: 10px; font-weight: 600; }
+                Stepper { valor <=> Estado.n; mini: 2; maxi: 40; }
+            }
+        }
+
+        // ===== Aba Avançado (Passo 5) =====
+        if Estado.aba == 1: Text {
+            text: "(controles avançados — Passo 5)";
+            color: Tema.muted;
+            font-size: 12px;
+        }
+
+        // espacador: empurra o botao para baixo
+        Rectangle { }
+
+        // Executar (primitivo, segue o tema)
+        Rectangle {
+            min-height: 44px;
+            max-height: 44px;
+            border-radius: 5px;
+            background: Tema.btn-bg;
+            Text {
+                x: (parent.width - self.width) / 2;
+                y: (parent.height - self.height) / 2;
+                text: "Executar";
+                color: Tema.btn-text;
+                font-size: 13.5px;
+                font-weight: 600;
+            }
+            TouchArea {
+                clicked => { root.executar(); }
+            }
+        }
+    }
+
+    // divisoria à direita
+    Rectangle {
+        x: parent.width - 1px;
+        width: 1px;
+        background: Tema.border;
+    }
+}
