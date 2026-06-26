@@ -1,0 +1,94 @@
+// Barra superior: abas (Principal/Avançado) à esquerda, seletores à direita.
+// As abas sao primitivos (Rectangle+Text+TouchArea) para seguir os 4 temas.
+// Os seletores usam ComboBox por ora (viram PopupWindow custom no Passo 5).
+import { Tema } from "../theme.slint";
+import { Estado } from "../estado.slint";
+import { ComboBox } from "std-widgets.slint";
+
+// Uma aba do "segmented control".
+component Aba inherits Rectangle {
+    in property <string> rotulo;
+    in property <bool> ativa;
+    callback clicado;
+
+    border-radius: 4px;
+    background: ativa ? Tema.accent : transparent;
+
+    HorizontalLayout {
+        padding-left: 18px;
+        padding-right: 18px;
+        Text {
+            text: root.rotulo;
+            vertical-alignment: center;
+            color: ativa ? Tema.win-bg : Tema.muted;
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+    }
+    TouchArea {
+        clicked => { root.clicado(); }
+    }
+}
+
+export component TopBar inherits Rectangle {
+    min-height: 46px;
+    max-height: 46px;
+    background: Tema.topbar;
+
+    HorizontalLayout {
+        padding: 9px;
+        spacing: 18px;
+
+        // segmented (abas) à esquerda
+        Rectangle {
+            horizontal-stretch: 0;
+            background: Tema.input-bg;
+            border-width: 1px;
+            border-color: Tema.input-border;
+            border-radius: 6px;
+            HorizontalLayout {
+                padding: 3px;
+                spacing: 4px;
+                Aba {
+                    rotulo: "Principal";
+                    ativa: Estado.aba == 0;
+                    clicado => { Estado.aba = 0; }
+                }
+                Aba {
+                    rotulo: "Avançado";
+                    ativa: Estado.aba == 1;
+                    clicado => { Estado.aba = 1; }
+                }
+            }
+        }
+
+        // espacador (empurra os seletores para a direita)
+        Rectangle { }
+
+        // seletores à direita
+        HorizontalLayout {
+            horizontal-stretch: 0;
+            spacing: 9px;
+            Text {
+                text: "IDIOMA";
+                vertical-alignment: center;
+                color: Tema.muted;
+                font-size: 11px;
+            }
+            ComboBox {
+                model: Estado.idiomas;
+                current-index <=> Estado.idioma;
+            }
+            Text {
+                text: "TEMA";
+                vertical-alignment: center;
+                color: Tema.muted;
+                font-size: 11px;
+            }
+            ComboBox {
+                model: Tema.nomes;
+                current-index <=> Tema.id;
+            }
+        }
+    }
+}

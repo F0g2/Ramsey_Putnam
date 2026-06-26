@@ -20,8 +20,9 @@ Tudo "de mentira" (sem cálculo real) até o domínio existir.
 
 - [x] **1. Tema + modularização** — `theme.slint` (global Tema, base+override),
       `components/console.slint`, `app.slint` vira painel. Mantém o que já roda.
-- [ ] **2. Esqueleto da janela** — barra nativa + `topbar.slint` (abas
+- [x] **2. Esqueleto da janela** — barra nativa + `topbar.slint` (abas
       Principal/Avançado + seletores idioma/tema) + divisão sidebar/main.
+      `global Estado` (aba, idioma). Sidebar/main ainda placeholders.
 - [ ] **3. Sidebar (Principal)** — `stepper.slint` (s, t, n), dropdown Método,
       botão Executar (sem ação).
 - [ ] **4. Coluna direita** — console por modelo de linhas coloridas +

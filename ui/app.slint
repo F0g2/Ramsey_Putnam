@@ -1,23 +1,23 @@
 // PAINEL: importa os pedacos e os compoe. Le-se daqui o esqueleto do app.
-// O codigo pesado mora em theme.slint e components/.
-import { Button, VerticalBox, HorizontalBox, ComboBox, Palette } from "std-widgets.slint";
+import { Button, Palette } from "std-widgets.slint";
 import { Tema } from "theme.slint";
+import { Estado } from "estado.slint";
+import { TopBar } from "components/topbar.slint";
 import { Console } from "components/console.slint";
 
 export component MainWindow inherits Window {
     title: "Ramsey-Putnam";
     icon: @image-url("assets/Penrose-dreieck.svg.png");
-    preferred-width: 800px;
+    preferred-width: 880px;
     preferred-height: 600px;
     background: Tema.win-bg;
 
     // Texto do console, preenchido pelo Rust.
     in property <string> console-text;
-    // Disparado pelo botao.
+    // Disparado pelo botao Executar.
     callback rodar();
 
     // Espelha a base do tema para alinhar os widgets prontos ao claro/escuro.
-    // (changed roda quando 'escuro' muda; mirror local de Tema.escuro.)
     property <bool> escuro: Tema.escuro;
     init => {
         Palette.color-scheme = self.escuro ? ColorScheme.dark : ColorScheme.light;
@@ -26,29 +26,72 @@ export component MainWindow inherits Window {
         Palette.color-scheme = self.escuro ? ColorScheme.dark : ColorScheme.light;
     }
 
-    VerticalBox {
-        HorizontalBox {
-            alignment: end;
-            Text {
-                text: "Tema:";
-                color: Tema.muted;
-                vertical-alignment: center;
-            }
-            ComboBox {
-                model: Tema.nomes;
-                current-index <=> Tema.id;
-            }
-        }
+    VerticalLayout {
+        TopBar { }
 
-        Console {
-            texto: root.console-text;
-        }
+        HorizontalLayout {
+            // ---- Sidebar (controles entram no Passo 3) ----
+            Rectangle {
+                min-width: 268px;
+                max-width: 268px;
+                background: Tema.panel-bg;
 
-        HorizontalBox {
-            alignment: center;
-            Button {
-                text: "Comecar calculo";
-                clicked => { root.rodar(); }
+                VerticalLayout {
+                    padding: 18px;
+                    spacing: 16px;
+                    Text {
+                        text: Estado.aba == 0 ? "PARÂMETROS" : "AVANÇADO";
+                        color: Tema.section;
+                        font-size: 11px;
+                        font-weight: 700;
+                    }
+                    Text {
+                        text: "(controles — Passo 3)";
+                        color: Tema.muted;
+                        font-size: 12px;
+                    }
+                    Rectangle { }  // espacador: empurra o botao para baixo
+                    Button {
+                        text: "Executar";
+                        clicked => { root.rodar(); }
+                    }
+                }
+                // linha divisoria a direita
+                Rectangle {
+                    x: parent.width - 1px;
+                    width: 1px;
+                    background: Tema.border;
+                }
+            }
+
+            // ---- Main (viz + console entram no Passo 4) ----
+            Rectangle {
+                background: Tema.win-bg;
+                VerticalLayout {
+                    padding: 16px;
+                    spacing: 12px;
+                    // area de visualizacao (placeholder)
+                    Rectangle {
+                        vertical-stretch: 1;
+                        background: Tema.console-bg;
+                        border-width: 1px;
+                        border-color: Tema.input-border;
+                        border-radius: 5px;
+                        Text {
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                            text: "Visualização (em breve)";
+                            color: Tema.muted;
+                            font-size: 12px;
+                        }
+                    }
+                    // nosso console
+                    Console {
+                        texto: root.console-text;
+                        min-height: 150px;
+                        max-height: 150px;
+                    }
+                }
             }
         }
     }

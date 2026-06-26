@@ -1,0 +1,8 @@
+// Estado compartilhado do app (global = singleton). Os componentes leem/escrevem
+// aqui em vez de passar tudo pela mao pelo painel.
+export global Estado {
+    in-out property <int> aba: 0;     // 0 Principal · 1 Avançado
+    in-out property <int> idioma: 0;  // 0 PT · 1 EN · 2 ES
+
+    out property <[string]> idiomas: ["Português", "English", "Español"];
+}
