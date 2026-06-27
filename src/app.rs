@@ -6,6 +6,19 @@ use slint::{ComponentHandle, ModelRc, VecModel};
 use std::rc::Rc;
 
 pub fn run() -> Result<(), slint::PlatformError> {
+    // No wasm: o winit NAO anexa o canvas ao DOM por padrao (with_append=false),
+    // entao a pagina fica em branco. Selecionamos o backend winit com um hook
+    // que liga o append. So no web; no desktop usa o backend padrao.
+    #[cfg(target_arch = "wasm32")]
+    {
+        use i_slint_backend_winit::winit::platform::web::WindowAttributesExtWebSys;
+        let backend = i_slint_backend_winit::Backend::builder()
+            .with_window_attributes_hook(|attrs| attrs.with_append(true))
+            .build()
+            .expect("falha ao criar o backend winit");
+        slint::platform::set_platform(Box::new(backend)).expect("falha ao definir a plataforma");
+    }
+
     // Cria a janela PRIMEIRO: e isso que inicializa o backend/plataforma do
     // Slint. O registro de fonte via fontique (abaixo) exige a plataforma ja
     // inicializada -- fazer antes daqui causa panic "platform not initialized".

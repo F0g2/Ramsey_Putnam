@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-slint = { version = "1", features = ["unstable-fontique-010"] }
+slint = { version = "1", features = ["unstable-fontique-010", "unstable-winit-030"] }
 
 [build-dependencies]
 slint-build = "1"
@@ -14,3 +14,4 @@ slint-build = "1"
 console_error_panic_hook = "0.1"
 getrandom_03 = { package = "getrandom", version = "0.3", features = ["wasm_js"] }
 getrandom_04 = { package = "getrandom", version = "0.4", features = ["wasm_js"] }
+i-slint-backend-winit = "=1.17.0"
