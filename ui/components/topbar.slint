@@ -6,24 +6,30 @@ import { Estado } from "../estado.slint";
 import { Textos } from "../strings.slint";
 import { Dropdown } from "dropdown.slint";
 
-// Uma aba do "segmented control".
+// Uma aba estilo "sublinhado": rotulo em cima, barrinha accent embaixo.
+// Empilha os dois com VerticalLayout (irmao vertical do HorizontalLayout).
 component Aba inherits Rectangle {
     in property <string> rotulo;
     in property <bool> ativa;
     callback clicado;
 
-    border-radius: 4px;
-    background: ativa ? Tema.accent : transparent;
-
-    HorizontalLayout {
-        padding-left: 18px;
-        padding-right: 18px;
+    VerticalLayout {
+        padding-left: 14px;
+        padding-right: 14px;
         Text {
             text: root.rotulo;
+            horizontal-alignment: center;
             vertical-alignment: center;
-            color: ativa ? Tema.win-bg : Tema.muted;
+            // texto forte na aba ativa, apagado na inativa.
+            color: ativa ? Tema.text : Tema.muted;
             font-size: 11.5px;
             font-weight: 600;
+        }
+        // Sublinhado: barrinha de 2px que so aparece (accent) na aba ativa.
+        Rectangle {
+            height: 2px;
+            border-radius: 1px;
+            background: ativa ? Tema.accent : transparent;
         }
     }
     TouchArea {
@@ -40,26 +46,19 @@ export component TopBar inherits Rectangle {
         padding: 9px;
         spacing: 18px;
 
-        // segmented (abas) à esquerda
-        Rectangle {
+        // abas (sublinhado) à esquerda — sem caixa em volta
+        HorizontalLayout {
             horizontal-stretch: 0;
-            background: Tema.input-bg;
-            border-width: 1px;
-            border-color: Tema.input-border;
-            border-radius: 6px;
-            HorizontalLayout {
-                padding: 3px;
-                spacing: 4px;
-                Aba {
-                    rotulo: Textos.x.tabPrincipal;
-                    ativa: Estado.aba == 0;
-                    clicado => { Estado.aba = 0; }
-                }
-                Aba {
-                    rotulo: Textos.x.tabAvancado;
-                    ativa: Estado.aba == 1;
-                    clicado => { Estado.aba = 1; }
-                }
+            spacing: 6px;
+            Aba {
+                rotulo: Textos.x.tabPrincipal;
+                ativa: Estado.aba == 0;
+                clicado => { Estado.aba = 0; }
+            }
+            Aba {
+                rotulo: Textos.x.tabAvancado;
+                ativa: Estado.aba == 1;
+                clicado => { Estado.aba = 1; }
             }
         }
 
