@@ -1,6 +1,6 @@
 # Configuracao do build web (Trunk).
 # dist = docs -> o GitHub Pages serve a pasta /docs da branch main.
-# public_url -> prefixo do caminho no Pages de projeto (f0g2.github.io/Ramsey_Putnam/).
+# public_url -> prefixo do caminho no Pages de projeto (f0g2.github.io/ramsey_gui/).
 [build]
 dist = "docs"
-public_url = "/Ramsey_Putnam/"
+public_url = "/ramsey_gui/"

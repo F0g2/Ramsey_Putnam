@@ -1,2 +1,2 @@
-# Ramsey_Putnam
+# ramsey_gui
 Numeros de Ramsey

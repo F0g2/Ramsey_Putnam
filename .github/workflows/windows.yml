@@ -26,6 +26,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete windows-build -y --cleanup-tag || true
-          gh release create windows-build "target/release/ramsey_putnam.exe" \
+          gh release create windows-build "target/release/ramsey_gui.exe" \
             --title "App desktop (Windows)" \
             --notes "Build automatico (Windows x64). O SmartScreen pode avisar que o autor e desconhecido: clique em 'Mais informacoes' -> 'Executar assim mesmo'."

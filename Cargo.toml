@@ -1,5 +1,5 @@
 [package]
-name = "ramsey_putnam"
+name = "ramsey_gui"
 version = "0.1.0"
 edition = "2024"
 

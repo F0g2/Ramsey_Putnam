@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Ramsey-Putnam</title>
+    <title>Ramsey GUI</title>
     
 <script type="module">
-import init, * as bindings from '/Ramsey_Putnam/ramsey_putnam-9fd59718f7bf00e3.js';
-const wasm = await init({ module_or_path: '/Ramsey_Putnam/ramsey_putnam-9fd59718f7bf00e3_bg.wasm' });
+import init, * as bindings from '/ramsey_gui/ramsey_gui-6d859a8c12edd22e.js';
+const wasm = await init({ module_or_path: '/ramsey_gui/ramsey_gui-6d859a8c12edd22e_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -20,6 +20,6 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
         html, body { margin: 0; height: 100%; background: #0a0d0b; overflow: hidden; }
         canvas { outline: none; }
     </style>
-<link rel="modulepreload" href="/Ramsey_Putnam/ramsey_putnam-9fd59718f7bf00e3.js" crossorigin="anonymous" integrity="sha384-vwbSIz6swmZciTB8DV2DEWvm2pNkdCB5FkV2dPHyF+/f13HDUczl8WKeNitEhXrG"><link rel="preload" href="/Ramsey_Putnam/ramsey_putnam-9fd59718f7bf00e3_bg.wasm" crossorigin="anonymous" integrity="sha384-PyP40qpo5xSLhhZNjUE5Im2WNwCGcaNqxBvQ/a5b4Xi6sLDNMrFfuwx6LbgzReWg" as="fetch" type="application/wasm"></head>
+<link rel="modulepreload" href="/ramsey_gui/ramsey_gui-6d859a8c12edd22e.js" crossorigin="anonymous" integrity="sha384-Hi325WVrX667AG8Y2mXdScLI6+avhjidSNgrq2XrIY7HTa3VwNzXxaPICHPsaSxm"><link rel="preload" href="/ramsey_gui/ramsey_gui-6d859a8c12edd22e_bg.wasm" crossorigin="anonymous" integrity="sha384-HlOdj7VGiUUqduobwtTJAkvuc/aK7n3MD/Cjx1ekF1oPdpglobFMgYt4qah1i1r4" as="fetch" type="application/wasm"></head>
 <body></body>
 </html>
